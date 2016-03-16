@@ -1,0 +1,12 @@
+<resources>
+    <string name = "app_name">指南针</string>
+
+    <string name = "hello_world">Hello world!</string>
+    <string name = "action_settings">Settings</string>
+    <string name="getting_location">Getting location...</string>
+    <string name="cannot_get_location">Cannot get your location</string>
+    <string name="location_north">%s 北纬</string>
+    <string name="location_south">%s 南纬</string>
+    <string name="location_east">%s 东经</string>
+    <string name="location_west">%s 西经</string>
+</resources>

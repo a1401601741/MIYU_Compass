@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+              android:orientation = "vertical"
+              android:layout_width = "match_parent"
+              android:layout_height = "match_parent"
+              android:background = "@drawable/background"
+    >
+
+    <FrameLayout
+        android:layout_width = "wrap_content"
+        android:layout_height = "140dp"
+        android:background = "@drawable/prompt"
+        >
+
+        <TextView
+            android:id = "@+id/tv_degree"
+            android:layout_width = "wrap_content"
+            android:layout_height = "70dp"
+            android:text = "fjakfjalkfjaklf"
+            android:layout_gravity = "center_horizontal"
+            android:gravity = "center"
+            android:layout_marginTop = "60dp"
+            android:textSize = "26sp"
+            android:textColor = "#FFFFFF"
+            />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width = "340dp"
+        android:layout_height = "340dp"
+        android:layout_gravity = "center"
+        >
+
+        <FrameLayout
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_gravity = "center"
+            >
+
+            <ImageView
+                android:scaleType="fitCenter"
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:layout_gravity = "center_horizontal"
+                android:src = "@drawable/background_compass"
+                />
+
+            <com.example.zhangchen.miyu_compass.view.CompassView
+                android:scaleType="fitCenter"
+                android:layout_width = "wrap_content"
+                android:id = "@+id/view_compass"
+                android:layout_height = "wrap_content"
+                android:src = "@drawable/compass"
+                />
+
+            <ImageView
+                android:scaleType="fitCenter"
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:src = "@drawable/miui_cover"
+                />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width = "fill_parent"
+        android:layout_height = "fill_parent"
+        >
+
+        <TextView
+            android:id = "@+id/tv_location"
+            android:layout_width = "fill_parent"
+            android:layout_gravity="bottom"
+            android:layout_height = "60dp"
+            android:textSize = "20sp"
+            android:textColor = "#FFFFFF"
+            android:text = "jfkajfkajf"
+            android:gravity = "center"
+            />
+    </LinearLayout>
+
+</LinearLayout>
