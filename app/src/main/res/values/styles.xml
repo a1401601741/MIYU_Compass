@@ -5,4 +5,21 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name = "TextView_UP">
+        <item name = "android:layout_weight">1</item>
+        <item name = "android:layout_width">fill_parent</item>
+        <item name = "android:layout_height">wrap_content</item>
+        <item name = "android:gravity">center</item>
+        <item name = "android:textSize">14sp</item>
+        <item name = "android:textColor">#CACACA</item>
+    </style>
+
+    <style name = "TextView_DOWN">
+        <item name = "android:layout_weight">1</item>
+        <item name = "android:layout_width">fill_parent</item>
+        <item name = "android:layout_height">fill_parent</item>
+        <item name = "android:gravity">center</item>
+        <item name = "android:textSize">20sp</item>
+        <item name = "android:textColor">#FFFFFF</item>
+    </style>
 </resources>

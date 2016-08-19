@@ -14,17 +14,17 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.view.View;
+import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zhangchen.miyu_compass.view.CompassView;
 import com.umeng.analytics.MobclickAgent;
-//import com.umeng.analytics.MobclickAgent;
 
 import java.util.Locale;
+
+//import com.umeng.analytics.MobclickAgent;
 
 
 public class CompassActivity extends Activity {
@@ -45,7 +45,10 @@ public class CompassActivity extends Activity {
     CompassView pointer;
 
     private TextView tv_degree;
-    private TextView tv_location;
+    private TextView tv_latitude;
+    private TextView tv_longitude;
+    private TextView tv_pressure;
+    private TextView tv_altitude;
 
     protected Runnable compassViewUpdate = new Runnable() {
         @Override
@@ -66,7 +69,6 @@ public class CompassActivity extends Activity {
 
                     direction = normalizeDegree(direction + ((to - direction) * interpolator
                             .getInterpolation(Math.abs(distance) > MAX_ROTATE_DEGREE ? 0.4f : 0.3f)));
-
 
                     pointer.updateDirection(direction);
                 }
@@ -103,7 +105,7 @@ public class CompassActivity extends Activity {
             updateLocation(locationManager.getLastKnownLocation(locationProvider));
             locationManager.requestLocationUpdates(locationProvider, 2000, 10, locationListener);
         } else {
-            tv_location.setText(R.string.cannot_get_location);
+            tv_latitude.setText(R.string.cannot_get_location);
         }
 
         if (orientSensor != null) {
@@ -137,7 +139,10 @@ public class CompassActivity extends Activity {
         pointer = (CompassView) findViewById(R.id.view_compass);
         chinese = TextUtils.equals(Locale.getDefault().getLanguage(), "zn");
         tv_degree = (TextView) findViewById(R.id.tv_degree);
-        tv_location = (TextView) findViewById(R.id.tv_location);
+        tv_latitude = (TextView) findViewById(R.id.tv_latitude);
+        tv_longitude = (TextView) findViewById(R.id.tv_longitude);
+        tv_pressure = (TextView) findViewById(R.id.tv_pressure);
+        tv_altitude = (TextView) findViewById(R.id.tv_altitude);
     }
 
     private void initService() {
@@ -146,10 +151,10 @@ public class CompassActivity extends Activity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setAltitudeRequired(false);
+        criteria.setAltitudeRequired(true);
         criteria.setBearingRequired(false);
         criteria.setCostAllowed(true);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setPowerRequirement(Criteria.ACCURACY_FINE);
         locationProvider = locationManager.getBestProvider(criteria, true);
     }
 
@@ -196,32 +201,42 @@ public class CompassActivity extends Activity {
             finalDirection.append(String.valueOf(finalDegree / 10));
             finalDegree %= 10;
         }
-        finalDirection.append(String.valueOf(finalDegree)+ "°");
+        finalDirection.append(String.valueOf(finalDegree) + "°");
 
         tv_degree.setText(finalDirection.toString());
     }
 
     private void updateLocation(Location location) {
         if (location == null) {
-            tv_location.setText("正在获取位置……");
+            tv_latitude.setText("正在获取位置……");
         } else {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb_latitude = new StringBuilder();
+            StringBuilder sb_longitude = new StringBuilder();
+            StringBuilder sb_altitude = new StringBuilder();
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
-
+            double altitude = location.getAltitude();
+            Log.i("海拔", String.valueOf(altitude));
+            Log.i("纬度", String.valueOf(latitude));
+            Log.i("经度", String.valueOf(longitude));
             if (latitude > 0.0f) {
-                sb.append(getString(R.string.location_north, getLocationString(latitude)));
+                sb_latitude.append(getLocationString(latitude));
             } else {
-                sb.append(getString(R.string.location_south, getLocationString(-1.0f * latitude)));
+                sb_latitude.append(
+                        getLocationString(-1.0f * latitude));
             }
 
-            sb.append("     ");
+//            sb_latitude.append("     ");
             if (longitude > 0.0f) {
-                sb.append(getString(R.string.location_east, getLocationString(longitude)));
+                sb_longitude.append(
+                        getLocationString(longitude));
             } else {
-                sb.append(getString(R.string.location_west, getLocationString(-1.0f * longitude)));
+                sb_longitude.append(
+                        getLocationString(-1.0f * longitude));
             }
-            tv_location.setText(sb.toString());
+            tv_latitude.setText(sb_latitude.toString());
+            tv_longitude.setText(sb_longitude.toString());
+            tv_altitude.setText(String.valueOf(altitude));
         }
     }
 
@@ -229,7 +244,7 @@ public class CompassActivity extends Activity {
         int du = (int) input;
         int fen = (int) ((input - du) * 3600) / 60;
         int miao = ((int) ((input - du) * 3600)) % 60;
-        return String.valueOf(du) + "°" + String.valueOf(fen) + "'" + String.valueOf(miao)+ "″";
+        return String.valueOf(du) + "°" + String.valueOf(fen) + "'" + String.valueOf(miao) + "″";
     }
 
     private float normalizeDegree(float degree) {
@@ -260,7 +275,7 @@ public class CompassActivity extends Activity {
             if (status != LocationProvider.OUT_OF_SERVICE) {
                 updateLocation(locationManager.getLastKnownLocation(locationProvider));
             } else {
-                tv_location.setText(R.string.cannot_get_location);
+                tv_latitude.setText(R.string.cannot_get_location);
             }
         }
 
